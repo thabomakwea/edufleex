@@ -63,8 +63,10 @@ export default function HeroBanner({ featuredVideo, episodes = [] }: HeroBannerP
                     src={imgSrc}
                     alt={featuredVideo.title}
                     fill
+                    sizes="100vw"
                     className="object-cover brightness-[0.7]"
                     priority
+                    loading="eager"
                     onError={() => {
                         // Fallback to regular hqdefault if maxres fails
                         if (imgSrc.includes('maxresdefault')) {

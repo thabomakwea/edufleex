@@ -97,6 +97,7 @@ export default function VideoCard({ video }: VideoCardProps) {
                     src={video.thumbnail}
                     alt={video.title}
                     fill
+                    sizes="(max-width: 768px) 160px, 260px"
                     className="rounded-sm object-cover md:rounded"
                 />
 
