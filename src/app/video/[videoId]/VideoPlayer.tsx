@@ -93,7 +93,7 @@ export default function VideoPlayer({ video }: VideoPlayerProps) {
                 isFullscreen ? "h-screen" : "max-h-[85vh]"
             )}>
                 <iframe
-                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&rel=0&modestbranding=1`}
+                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1&rel=0&modestbranding=1`}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                     allowFullScreen
