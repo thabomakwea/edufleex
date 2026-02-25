@@ -30,7 +30,7 @@ export default function VideoRow({ title, videos }: VideoRowProps) {
 
     return (
         <div className="space-y-2 py-4 md:space-y-4">
-            <h2 className="px-4 text-xl font-bold text-white md:px-12 md:text-2xl">
+            <h2 className="px-4 text-xl font-bold text-zinc-800 md:px-12 md:text-2xl">
                 {title}
             </h2>
 
