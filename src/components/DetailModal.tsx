@@ -4,6 +4,7 @@ import { X, Play, Plus, ThumbsUp, Volume2, VolumeX, Share2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactPlayer from 'react-player';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { Video as VideoType } from '@prisma/client';
 import { cn } from '@/lib/utils';
 
@@ -18,6 +19,12 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
     const [isPlaying, setIsPlaying] = useState(true);
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
 
     useEffect(() => {
         // Check if video is in favorites
@@ -68,7 +75,9 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
         };
     }, [isOpen]);
 
-    return (
+    if (!mounted) return null;
+
+    const modalContent = (
         <AnimatePresence>
             {isOpen && (
                 <div 
@@ -209,4 +218,6 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
             )}
         </AnimatePresence>
     );
+
+    return mounted ? createPortal(modalContent, document.body) : null;
 }
