@@ -72,7 +72,7 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
         <AnimatePresence>
             {isOpen && (
                 <div 
-                    className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto overflow-x-hidden bg-black/95 backdrop-blur-sm"
+                    className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overflow-x-hidden bg-black/95 backdrop-blur-sm"
                     onClick={onClose}
                 >
                     <motion.div
@@ -85,7 +85,7 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                         {/* Close Button */}
                         <button
                             onClick={onClose}
-                            className="absolute right-4 top-4 z-[10000] flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-black/90"
+                            className="absolute right-4 top-4 z-[100000] flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-black/90"
                         >
                             <X className="h-6 w-6" />
                         </button>

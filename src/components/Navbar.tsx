@@ -44,7 +44,7 @@ export default function Navbar() {
     return (
         <>
             <nav className={cn(
-                "fixed top-0 z-50 w-full px-4 py-4 transition-colors duration-300 md:px-12",
+                "fixed top-0 z-[100] w-full px-4 py-4 transition-colors duration-300 md:px-12",
                 isScrolled ? "bg-black" : "bg-gradient-to-b from-black/80 to-transparent"
             )}>
                 <div className="flex items-center justify-between">
@@ -96,14 +96,14 @@ export default function Navbar() {
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
                 <div 
-                    className="fixed inset-0 z-40 bg-black/80 md:hidden"
+                    className="fixed inset-0 z-[90] bg-black/80 md:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
 
             {/* Mobile Menu Panel */}
             <div className={cn(
-                "fixed top-20 right-0 z-40 h-full w-64 transform bg-black/95 backdrop-blur-sm transition-transform duration-300 ease-in-out md:hidden",
+                "fixed top-20 right-0 z-[90] h-full w-64 transform bg-black/95 backdrop-blur-sm transition-transform duration-300 ease-in-out md:hidden",
                 isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
             )}>
                 <div className="flex flex-col p-6">
