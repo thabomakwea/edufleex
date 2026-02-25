@@ -22,6 +22,13 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
 
+    // Debug log
+    useEffect(() => {
+        if (isOpen) {
+            console.log('DetailModal - Related videos count:', relatedVideos.length);
+        }
+    }, [isOpen, relatedVideos]);
+
     useEffect(() => {
         setMounted(true);
         return () => setMounted(false);
@@ -191,9 +198,9 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
                             </div>
 
                             {/* More Like This Section */}
-                            {relatedVideos.length > 0 && (
-                                <div className="mt-12 border-t border-gray-700 pt-8 pb-8">
-                                    <h3 className="mb-6 text-2xl font-bold text-white">More Like These</h3>
+                            <div className="mt-12 border-t border-gray-700 pt-8 pb-8">
+                                <h3 className="mb-6 text-2xl font-bold text-white">More Like These</h3>
+                                {relatedVideos.length > 0 ? (
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                         {relatedVideos.map((relatedVideo) => (
                                             <div
@@ -221,8 +228,12 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
                                             </div>
                                         ))}
                                     </div>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="text-gray-400 text-center py-8">
+                                        Loading related videos...
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </motion.div>
                 </div>

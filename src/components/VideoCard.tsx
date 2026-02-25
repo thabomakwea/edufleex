@@ -57,9 +57,33 @@ export default function VideoCard({ video }: VideoCardProps) {
 
     const fetchRelatedVideos = async () => {
         try {
-            const res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=12&excludeId=${video.id}`);
+            // First try to get videos with same subject and grade
+            let res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=12&excludeId=${video.id}`);
             if (res.ok) {
                 const videos = await res.json();
+                console.log('Fetched related videos (subject+grade):', videos.length);
+                if (videos.length > 0) {
+                    setRelatedVideos(videos);
+                    return;
+                }
+            }
+            
+            // If no videos found, try just same subject
+            res = await fetch(`/api/videos?subject=${video.subject}&limit=12&excludeId=${video.id}`);
+            if (res.ok) {
+                const videos = await res.json();
+                console.log('Fetched related videos (subject only):', videos.length);
+                if (videos.length > 0) {
+                    setRelatedVideos(videos);
+                    return;
+                }
+            }
+            
+            // If still no videos, get any videos except current one
+            res = await fetch(`/api/videos?limit=12&excludeId=${video.id}`);
+            if (res.ok) {
+                const videos = await res.json();
+                console.log('Fetched related videos (any):', videos.length);
                 setRelatedVideos(videos);
             }
         } catch (error) {
