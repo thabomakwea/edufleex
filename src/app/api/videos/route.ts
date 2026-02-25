@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     const where: any = {};
     if (subject) where.subject = subject;
     if (grade) where.grade = grade;
-    if (excludeId) where.id = { not: parseInt(excludeId) };
+    if (excludeId) where.id = { not: excludeId };
 
     const videos = await prisma.video.findMany({
         where: Object.keys(where).length > 0 ? where : undefined,
