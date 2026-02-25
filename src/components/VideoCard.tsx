@@ -57,7 +57,7 @@ export default function VideoCard({ video }: VideoCardProps) {
 
     const fetchRelatedVideos = async () => {
         try {
-            const res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=6&excludeId=${video.id}`);
+            const res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=12&excludeId=${video.id}`);
             if (res.ok) {
                 const videos = await res.json();
                 setRelatedVideos(videos);

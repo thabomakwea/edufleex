@@ -82,14 +82,14 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
         <AnimatePresence>
             {isOpen && (
                 <div 
-                    className="fixed inset-0 z-[99999] flex items-start justify-center overflow-y-auto overflow-x-hidden bg-black/95 backdrop-blur-sm"
+                    className="fixed inset-0 z-[99999] flex items-center justify-center overflow-y-auto overflow-x-hidden bg-black/95 backdrop-blur-sm"
                     onClick={onClose}
                 >
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative mx-auto w-full max-w-5xl overflow-y-auto rounded-lg bg-[#181818] shadow-2xl my-8"
+                        className="relative mx-auto w-full max-w-5xl h-full overflow-y-auto rounded-lg bg-[#181818] shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Close Button */}
@@ -192,10 +192,10 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
 
                             {/* More Like This Section */}
                             {relatedVideos.length > 0 && (
-                                <div className="mt-12 border-t border-gray-700 pt-8">
-                                    <h3 className="mb-6 text-2xl font-bold text-white">More Like This</h3>
+                                <div className="mt-12 border-t border-gray-700 pt-8 pb-8">
+                                    <h3 className="mb-6 text-2xl font-bold text-white">More Like These</h3>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                        {relatedVideos.slice(0, 6).map((relatedVideo) => (
+                                        {relatedVideos.map((relatedVideo) => (
                                             <div
                                                 key={relatedVideo.id}
                                                 className="relative aspect-video rounded overflow-hidden bg-gray-800 cursor-pointer transition-transform hover:scale-105 group"
