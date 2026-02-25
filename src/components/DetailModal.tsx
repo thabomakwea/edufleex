@@ -1,10 +1,10 @@
 'use client';
 
-import { X, Play, Plus, ThumbsUp, Volume2, VolumeX, Share2 } from 'lucide-react';
+import { X, Play, Plus, ThumbsUp, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ReactPlayer from 'react-player';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import type { Video as VideoType } from '@prisma/client';
 import { cn } from '@/lib/utils';
 
@@ -15,11 +15,10 @@ interface DetailModalProps {
 }
 
 export default function DetailModal({ video, isOpen, onClose }: DetailModalProps) {
-    const [muted, setMuted] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(true);
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
@@ -102,19 +101,18 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                         {/* Video Player Section with Overlay */}
                         <div className="relative w-full bg-black">
                             <div className="aspect-video w-full">
-                                <ReactPlayer
-                                    src={`https://www.youtube.com/watch?v=${video.videoId}`}
-                                    width="100%"
-                                    height="100%"
-                                    playing={isPlaying}
-                                    muted={muted}
-                                    controls={false}
-                                    className="absolute inset-0"
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1`}
+                                    className="w-full h-full"
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen
+                                    title={video.title}
+                                    style={{ border: 'none' }}
                                 />
                             </div>
                             
                             {/* Gradient Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-transparent to-transparent pointer-events-none" />
                             
                             {/* Content Overlay on Video */}
                             <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
@@ -124,7 +122,7 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                                 
                                 <div className="flex items-center gap-3 mb-6">
                                     <button 
-                                        onClick={() => setIsPlaying(!isPlaying)}
+                                        onClick={() => router.push(`/video/${video.videoId}`)}
                                         className="flex items-center gap-3 rounded bg-white px-8 py-3 text-lg font-bold text-black transition hover:bg-gray-200"
                                     >
                                         <Play className="h-6 w-6 fill-current" /> Play
@@ -148,10 +146,10 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                                         <ThumbsUp className="h-6 w-6" />
                                     </button>
                                     <button
-                                        onClick={() => setMuted(!muted)}
+                                        onClick={handleShare}
                                         className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/70 text-white transition hover:border-white"
                                     >
-                                        {muted ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}
+                                        <Share2 className="h-6 w-6" />
                                     </button>
                                 </div>
                             </div>

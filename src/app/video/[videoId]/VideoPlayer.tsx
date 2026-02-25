@@ -1,16 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, ThumbsUp, Share2, Maximize, Minimize } from 'lucide-react';
 import type { Video as VideoType } from '@prisma/client';
 import { cn } from '@/lib/utils';
-
-const ReactPlayer = dynamic(() => import('react-player'), {
-    ssr: false,
-}) as any;
-
-import { useRef } from 'react';
 
 interface VideoPlayerProps {
     video: VideoType;
@@ -99,22 +92,13 @@ export default function VideoPlayer({ video }: VideoPlayerProps) {
                 "relative aspect-video w-full transition-all duration-300",
                 isFullscreen ? "h-screen" : "max-h-[85vh]"
             )}>
-                <ReactPlayer
-                    url={`https://www.youtube.com/watch?v=${video.videoId}`}
-                    width="100%"
-                    height="100%"
-                    controls={true}
-                    playing={false}
-                    light={true}
-                    config={{
-                        youtube: {
-                            playerVars: {
-                                modestbranding: 1,
-                                rel: 0,
-                                fs: 1
-                            }
-                        }
-                    }}
+                <iframe
+                    src={`https://www.youtube.com/embed/${video.videoId}?autoplay=0&rel=0&modestbranding=1`}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    title={video.title}
+                    style={{ border: 'none' }}
                 />
             </div>
 
