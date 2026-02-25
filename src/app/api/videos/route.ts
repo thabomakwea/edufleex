@@ -1,8 +1,22 @@
 import { prisma } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const subject = searchParams.get('subject');
+    const grade = searchParams.get('grade');
+    const limit = searchParams.get('limit');
+    const excludeId = searchParams.get('excludeId');
+
+    // Build where clause for filtering
+    const where: any = {};
+    if (subject) where.subject = subject;
+    if (grade) where.grade = grade;
+    if (excludeId) where.id = { not: parseInt(excludeId) };
+
     const videos = await prisma.video.findMany({
+        where: Object.keys(where).length > 0 ? where : undefined,
+        take: limit ? parseInt(limit) : undefined,
         orderBy: { createdAt: 'desc' },
         include: { category: true }
     });

@@ -1,0 +1,148 @@
+﻿
+> edufleex@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+node.exe : 
+[2m[DEBUG][22m 
+Writing debug info 
+to: [2m[34m`[39m[
+22m[34mC:\Users\thab
+o\Documents\developme
+nt\edufleex\tailwindc
+ss-26780.log[39m[2m
+[34m`[39m[22m
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" "C:
+\Users\thabo\AppData\
+Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ([2m[DE   
+ BUG][22...[34m`    
+[39m[22m:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+
+[2m[481.83ms][22m [
+@tailwindcss/postcss]
+ src\app\globals.css
+[2m[  0.21ms][22m  
+[2m Γå│ [22mQuick 
+bail check
+[2m[ 47.03ms][22m  
+[2m Γå│ [22mSetup 
+compiler
+[2m[  1.01ms][22m  
+  [2m Γå│ 
+[22mPostCSS AST -> 
+Tailwind CSS AST
+[2m[ 45.98ms][22m  
+  [2m Γå│ 
+[22mCreate compiler
+[2m[  0.19ms][22m  
+[2m Γå│ 
+[22mRegister full 
+rebuild paths
+[2m[ 93.88ms][22m  
+[2m Γå│ [22mSetup 
+scanner
+[2m[ 53.81ms][22m  
+[2m Γå│ [22mScan 
+for candidates
+[2m[117.74ms][22m  
+[2m Γå│ 
+[22mRegister 
+dependency messages
+[2m[ 71.65ms][22m  
+[2m Γå│ [22mBuild 
+utilities
+[2m[ 90.33ms][22m  
+[2m Γå│ 
+[22mOptimization
+[2m[  1.47ms][22m  
+  [2m Γå│ [22mAST 
+-> CSS
+[2m[ 70.34ms][22m  
+  [2m Γå│ 
+[22mLightning CSS
+[2m[ 18.45ms][22m  
+  [2m Γå│ [22mCSS 
+-> PostCSS AST
+[2m[  5.67ms][22m  
+[2m Γå│ [22mUpdate 
+PostCSS AST
+
+Γ£ô Compiled successfully in 12.3s
+  Running TypeScript ...
+Failed to compile.
+
+./src/app/video/[vide
+oId]/VideoPlayer.tsx:
+76:29
+Type error: Object 
+literal may only 
+specify known 
+properties, and 
+'playerVars' does 
+not exist in type '{ 
+cc_lang_pref?: 
+string | undefined; 
+cc_load_policy?: 0 | 
+1 | undefined; 
+color?: "red" | 
+"white" | undefined; 
+disablekb?: 0 | 1 | 
+undefined; 
+enablejsapi?: 0 | 1 
+| undefined; end?: 
+number | undefined; 
+... 8 more ...; 
+referrerpolicy?: 
+string | undefined; 
+}'.
+
+[0m [90m 74 |[39m 
+                    
+config[33m=[39m{{
+ [90m 75 |[39m     
+                    
+youtube[33m:[39m {
+[31m[1m>[22m[39m
+[90m 76 |[39m       
+                     
+ playerVars[33m:[39
+m { 
+ [90m    |[39m     
+                     
+   
+[31m[1m^[22m[39m
+ [90m 77 |[39m     
+                     
+       modestbranding
+[33m:[39m [35m1[3
+9m[33m,[39m
+ [90m 78 |[39m     
+                     
+       
+rel[33m:[39m [35m0
+[39m[33m,[39m
+ [90m 79 |[39m     
+                     
+   }[0m
+Next.js build worker 
+exited with code: 1 
+and signal: null

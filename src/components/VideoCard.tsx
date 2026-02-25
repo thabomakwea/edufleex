@@ -17,6 +17,7 @@ export default function VideoCard({ video }: VideoCardProps) {
     const [isModalHovered, setIsModalHovered] = useState(false);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [isFavorited, setIsFavorited] = useState(false);
+    const [relatedVideos, setRelatedVideos] = useState<VideoType[]>([]);
     const cardRef = useRef<HTMLDivElement>(null);
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +53,23 @@ export default function VideoCard({ video }: VideoCardProps) {
             headers: { 'Content-Type': 'application/json' },
         });
         if (res.ok) setIsFavorited(!isFavorited);
+    };
+
+    const fetchRelatedVideos = async () => {
+        try {
+            const res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=6&excludeId=${video.id}`);
+            if (res.ok) {
+                const videos = await res.json();
+                setRelatedVideos(videos);
+            }
+        } catch (error) {
+            console.error('Failed to fetch related videos:', error);
+        }
+    };
+
+    const handleOpenModal = () => {
+        fetchRelatedVideos();
+        setIsModalOpen(true);
     };
 
     const handleCardMouseEnter = () => {
@@ -91,7 +109,7 @@ export default function VideoCard({ video }: VideoCardProps) {
                 className="relative min-w-[160px] h-28 cursor-pointer transition-transform duration-200 ease-out md:h-36 md:min-w-[260px] md:hover:scale-110 z-10"
                 onMouseEnter={handleCardMouseEnter}
                 onMouseLeave={handleCardMouseLeave}
-                onClick={() => setIsModalOpen(true)}
+                onClick={handleOpenModal}
             >
                 <Image
                     src={video.thumbnail}
@@ -146,7 +164,7 @@ export default function VideoCard({ video }: VideoCardProps) {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setIsModalOpen(true);
+                                        handleOpenModal();
                                     }}
                                     className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition hover:bg-gray-200"
                                 >
@@ -197,7 +215,12 @@ export default function VideoCard({ video }: VideoCardProps) {
             )}
 
             {isModalOpen && (
-                <DetailModal video={video} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                <DetailModal 
+                    video={video} 
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)}
+                    relatedVideos={relatedVideos}
+                />
             )}
         </>
     );

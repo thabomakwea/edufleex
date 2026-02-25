@@ -7,14 +7,16 @@ import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import type { Video as VideoType } from '@prisma/client';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface DetailModalProps {
     video: VideoType;
     isOpen: boolean;
     onClose: () => void;
+    relatedVideos?: VideoType[];
 }
 
-export default function DetailModal({ video, isOpen, onClose }: DetailModalProps) {
+export default function DetailModal({ video, isOpen, onClose, relatedVideos = [] }: DetailModalProps) {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
     const [mounted, setMounted] = useState(false);
@@ -189,27 +191,38 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                             </div>
 
                             {/* More Like This Section */}
-                            <div className="mt-12 border-t border-gray-700 pt-8">
-                                <h3 className="mb-6 text-2xl font-bold text-white">More Like This</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {/* Placeholder for similar videos */}
-                                    <div className="relative aspect-video rounded bg-gray-800 animate-pulse">
-                                        <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 text-xs text-white rounded">
-                                            15m
-                                        </div>
-                                    </div>
-                                    <div className="relative aspect-video rounded bg-gray-800 animate-pulse">
-                                        <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 text-xs text-white rounded">
-                                            55m
-                                        </div>
-                                    </div>
-                                    <div className="relative aspect-video rounded bg-gray-800 animate-pulse">
-                                        <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 text-xs text-white rounded">
-                                            6m
-                                        </div>
+                            {relatedVideos.length > 0 && (
+                                <div className="mt-12 border-t border-gray-700 pt-8">
+                                    <h3 className="mb-6 text-2xl font-bold text-white">More Like This</h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        {relatedVideos.slice(0, 6).map((relatedVideo) => (
+                                            <div
+                                                key={relatedVideo.id}
+                                                className="relative aspect-video rounded overflow-hidden bg-gray-800 cursor-pointer transition-transform hover:scale-105 group"
+                                                onClick={() => {
+                                                    onClose();
+                                                    router.push(`/video/${relatedVideo.videoId}`);
+                                                }}
+                                            >
+                                                <Image
+                                                    src={relatedVideo.thumbnail}
+                                                    alt={relatedVideo.title}
+                                                    fill
+                                                    sizes="(max-width: 768px) 50vw, 33vw"
+                                                    className="object-cover"
+                                                />
+                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
+                                                <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 text-xs text-white rounded">
+                                                    {relatedVideo.duration}
+                                                </div>
+                                                <div className="absolute bottom-2 left-2 right-12 text-white text-sm font-medium truncate opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 px-2 py-1 rounded">
+                                                    {relatedVideo.title}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </motion.div>
                 </div>
