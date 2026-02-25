@@ -1,0 +1,92 @@
+create a Netflix clone. width modern look and feel.
+
+This will be an educational app
+ 
+students should be able to do the following
+- play video
+- view more info about the video
+- add to favorites or my list
+
+target market
+- students
+- high school
+- primary
+- Grade 0 - 12
+
+look and feel should be educational with a youthful and kiddies touch
+nice ui and ux with animations
+
+structure
+header -
+sticky header black background color
+white text
+logo
+menu
+
+footer
+- simple footer
+ - black background
+
+- 
+
+design a rich and nice user interface for kids and teens under 18 year olds
+
+nefilx clone.
+
+This app will be used by students to watch educational content like
+ - Mathematics
+ - Science
+ - Biology
+ - Geography
+ - History
+ - e.t.c
+
+The app should also encourage the following
+ - Gamification
+ - Personalization
+ - Engagement
+  - and any innovative and creative ideas you have in mind
+
+
+This app will be used by the department of education and the sabc education for
+ - education
+ - Learning
+ - Support
+
+The app should use youtube videos
+  {
+    id: "1",
+    title: "Algebra",
+    description: "Learn the basics of algebra for high school students.",
+    thumbnail: "https://img.youtube.com/vi/fk0wyv1HpFg/0.jpg",
+    videoId: "fk0wyv1HpFg", // Example YouTube ID
+    subject: "Mathematics",
+    grade: "Grade 8",
+    duration: "10:30",
+    views: 15000,
+  }
+
+
+Technologies
+database = SQLite
+tailwind css
+Nextjs
+reactplayer
+
+check the following files and complete the app
+- logo
+- package.json
+- favicon.ico
+ - motivation folder contains inspirational designs that you can reference
+
+
+user flow
+
+- User lands on the Homepage
+- the user can see a feaured video playing in the background as a hero banner full viewport screen
+- user can also see the episodes of the featured video in the hero banner section, they should be bale to scroll the videos horizontally
+- and other categories follow with thumbnails.
+- when a user hovers on a thumbnail there should be a pop up witch shows more info about the video, with play button like a detail modal
+
+
+

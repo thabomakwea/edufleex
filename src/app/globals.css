@@ -2,25 +2,35 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111111;
+  --netflix-red: #e50914;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-netflix-red: var(--netflix-red);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+.netflix-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.netflix-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.banner-gradient {
+  background: linear-gradient(to top, #ffffff, transparent);
+}
+
+.navbar-gradient {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, transparent);
 }
