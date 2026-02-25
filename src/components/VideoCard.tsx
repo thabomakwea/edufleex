@@ -114,7 +114,7 @@ export default function VideoCard({ video }: VideoCardProps) {
             {isHovered && (
                 <div
                     ref={modalRef}
-                    className="absolute z-[300] w-[280px] md:w-[320px] bg-white rounded-md shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 top-[-100px] md:"
+                    className="absolute z-[60] w-[280px] md:w-[320px] bg-white rounded-md shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 top-[-100px] md:"
                     style={{
                         // top: cardRef.current ? Math.max(10, cardRef.current.getBoundingClientRect().top - 320) : 0,
                         left: cardRef.current ? Math.min(
