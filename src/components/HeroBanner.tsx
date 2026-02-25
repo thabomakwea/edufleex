@@ -3,7 +3,9 @@
 import Image from 'next/image';
 import { Play, Info, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Video as VideoType } from '@prisma/client';
+import DetailModal from './DetailModal';
 
 interface HeroBannerProps {
     featuredVideo: VideoType;
@@ -11,9 +13,24 @@ interface HeroBannerProps {
 }
 
 export default function HeroBanner({ featuredVideo, episodes = [] }: HeroBannerProps) {
+    const router = useRouter();
     const scrollRef = useRef<HTMLDivElement>(null);
     const [imgSrc, setImgSrc] = useState(featuredVideo.thumbnail.replace('/0.jpg', '/maxresdefault.jpg'));
     const [showVideo, setShowVideo] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Check if mobile on mount and resize
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Update image source if the featured video changes
     useEffect(() => {
@@ -55,36 +72,35 @@ export default function HeroBanner({ featuredVideo, episodes = [] }: HeroBannerP
                         }
                     }}
                 />
-                
+
                 {/* Autoplay YouTube Video Background */}
                 {showVideo && (
                     <div className="absolute inset-0 overflow-hidden">
                         <iframe
                             src={`https://www.youtube.com/embed/${featuredVideo.videoId}?autoplay=1&mute=1&loop=1&playlist=${featuredVideo.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1`}
                             className="absolute inset-0 w-full h-full brightness-[0.7]"
-                            style={{ 
-                                width: '100%', 
-                                height: '100%', 
+                            style={{
+                                width: '100%',
+                                height: '100%',
                                 border: 'none',
                                 pointerEvents: 'none',
-                                transform: 'scale(1.5)', // Zoom in to cover black bars
-                                transformOrigin: 'center center' // Scale from center
+                                transform: isMobile ? 'scale(3.5)' : 'scale(1.5)',
+                                transformOrigin: 'center center'
                             }}
                             allow="autoplay; encrypted-media"
                             allowFullScreen={false}
-                            frameBorder="0"
                             title="Featured Video Background"
                         />
                     </div>
                 )}
-                
+
                 <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-black/50" />
             </div>
 
             {/* Content */}
-            <div className="absolute bottom-[20%] left-4 right-4 z-10 md:left-12 md:top-[18rem]">
+            <div className="absolute bottom-[20%] left-4 right-4 z-10 md:left-12 md:top-[10rem]">
                 <div className="max-w-xl">
-                    <span className="mb-2 inline-block rounded bg-red-600 px-2 py-1 text-xs font-bold text-white uppercase tracking-wider">
+                    <span className="mb-2 inline-block rounded bg-sky-700 px-2 py-1 text-xs font-bold text-white uppercase tracking-wider">
                         Featured in {featuredVideo.subject}
                     </span>
                     <h1 className="mb-4 text-4xl font-bold text-white md:text-6xl drop-shadow-lg">
@@ -95,17 +111,23 @@ export default function HeroBanner({ featuredVideo, episodes = [] }: HeroBannerP
                     </p>
 
                     <div className="flex items-center gap-3">
-                        <button className="flex items-center gap-2 rounded-md bg-white px-8 py-2 font-bold text-black transition hover:bg-white/80">
+                        <button 
+                            onClick={() => router.push(`/video/${featuredVideo.videoId}`)}
+                            className="flex items-center gap-2 rounded-md bg-white px-8 py-2 font-bold text-black transition hover:bg-white/80"
+                        >
                             <Play className="h-6 w-6 fill-current" /> Play
                         </button>
-                        <button className="flex items-center gap-2 rounded-md bg-gray-500/70 px-8 py-2 font-bold text-white transition hover:bg-gray-500/50">
+                        <button 
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex items-center gap-2 rounded-md bg-gray-500/70 px-8 py-2 font-bold text-white transition hover:bg-gray-500/50"
+                        >
                             <Info className="h-6 w-6" /> More Info
                         </button>
                     </div>
                 </div>
 
                 {/* Episodes Section in Hero */}
-                {episodes.length > 0 && (
+                {/* {episodes.length > 0 && (
                     <div className="mt-12 hidden md:block">
                         <h3 className="mb-4 text-xl font-semibold text-white">Episodes</h3>
                         <div className="group relative">
@@ -146,8 +168,17 @@ export default function HeroBanner({ featuredVideo, episodes = [] }: HeroBannerP
                             </button>
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
+
+            {/* Detail Modal */}
+            {isModalOpen && (
+                <DetailModal 
+                    video={featuredVideo} 
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)} 
+                />
+            )}
         </div>
     );
 }

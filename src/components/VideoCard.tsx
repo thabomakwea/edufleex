@@ -63,9 +63,9 @@ export default function VideoCard({ video }: VideoCardProps) {
         setIsCardHovered(false);
         // Delay hiding to allow mouse to move to modal
         // setHoverTimeout(setTimeout(() => {
-            if (!isModalHovered) {
-                setIsHovered(false);
-            }
+        if (!isModalHovered) {
+            setIsHovered(false);
+        }
         // }, 1800));
     };
 
@@ -78,9 +78,9 @@ export default function VideoCard({ video }: VideoCardProps) {
         setIsModalHovered(false);
         // Delay hiding to allow mouse to move back to card
         // setHoverTimeout(setTimeout(() => {
-            if (!isCardHovered) {
-                setIsHovered(false);
-            }
+        if (!isCardHovered) {
+            setIsHovered(false);
+        }
         // }, 1800));
     };
 
@@ -113,7 +113,7 @@ export default function VideoCard({ video }: VideoCardProps) {
             {isHovered && (
                 <div
                     ref={modalRef}
-                    className="absolute z-[300] w-[280px] md:w-[320px] bg-white rounded-md shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 top-[-100px]"
+                    className="absolute z-[300] w-[280px] md:w-[320px] bg-white rounded-md shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200 top-[-100px] md:"
                     style={{
                         // top: cardRef.current ? Math.max(10, cardRef.current.getBoundingClientRect().top - 320) : 0,
                         left: cardRef.current ? Math.min(
@@ -129,20 +129,20 @@ export default function VideoCard({ video }: VideoCardProps) {
                         <iframe
                             src={`https://www.youtube.com/embed/${video.videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3`}
                             className="w-full h-full"
+                            style={{ border: 'none' }}
                             allow="autoplay; encrypted-media"
-                            frameBorder="0"
                             title={`${video.title} preview`}
                         />
-                        
+
                         {/* Action Buttons Overlay at Bottom of Video */}
                         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between" style={{
-    padding: '0.5rem',
-    background: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: '1rem',
-    bottom: '0.3rem',
-}}>
+                            padding: '0.5rem',
+                            background: 'rgba(0, 0, 0, 0.5)',
+                            borderRadius: '1rem',
+                            bottom: '0.3rem',
+                        }}>
                             <div className="flex items-center gap-2">
-                                <button 
+                                <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setIsModalOpen(true);
@@ -151,16 +151,15 @@ export default function VideoCard({ video }: VideoCardProps) {
                                 >
                                     <Play className="h-4 w-4 fill-current" />
                                 </button>
-                                <button 
+                                <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         toggleFavorite();
                                     }}
-                                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition ${
-                                        isFavorited 
-                                            ? 'bg-white border-white text-black' 
+                                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition ${isFavorited
+                                            ? 'bg-white border-white text-black'
                                             : 'border-white/70 text-white hover:border-white'
-                                    }`}
+                                        }`}
                                 >
                                     <Plus className={`h-4 w-4 ${isFavorited ? 'rotate-45' : ''}`} />
                                 </button>

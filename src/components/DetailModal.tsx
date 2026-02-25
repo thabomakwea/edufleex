@@ -94,7 +94,7 @@ export default function DetailModal({ video, isOpen, onClose }: DetailModalProps
                             
                             {/* Content Overlay on Video */}
                             <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-xl">
+                                <h1 className="text-[2rem] md:text-4xl lg:text-5xl font-bold text-white mb-6 drop-shadow-xl">
                                     {video.title}
                                 </h1>
                                 

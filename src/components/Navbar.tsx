@@ -43,6 +43,7 @@ export default function Navbar() {
                         <li><Link href="/grades" className="transition hover:text-gray-300">Grades</Link></li>
                         <li><Link href="/new" className="transition hover:text-gray-300">New & Popular</Link></li>
                         <li><Link href="/mylist" className="transition hover:text-gray-300">My List</Link></li>
+                        <li><Link href="https://studio--studio-7000740348-4a3a4.us-central1.hosted.app/signin" className="transition hover:text-gray-300" target="_blank" rel="noopener noreferrer">Nolwazi</Link></li>
                     </ul>
                 </div>
 
