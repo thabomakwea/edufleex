@@ -13,21 +13,70 @@ interface DetailModalProps {
     video: VideoType;
     isOpen: boolean;
     onClose: () => void;
-    relatedVideos?: VideoType[];
 }
 
-export default function DetailModal({ video, isOpen, onClose, relatedVideos = [] }: DetailModalProps) {
+export default function DetailModal({ video, isOpen, onClose }: DetailModalProps) {
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [loadedRelatedVideos, setLoadedRelatedVideos] = useState<VideoType[]>([]);
+    const [isLoadingVideos, setIsLoadingVideos] = useState(false);
     const router = useRouter();
+
+    // Fetch related videos when modal opens
+    useEffect(() => {
+        const fetchRelatedVideos = async () => {
+            if (!isOpen) return;
+            
+            setIsLoadingVideos(true);
+            try {
+                // First try to get videos with same subject and grade
+                let res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=12&excludeId=${video.id}`);
+                if (res.ok) {
+                    const videos = await res.json();
+                    console.log('Fetched related videos (subject+grade):', videos.length);
+                    if (videos.length > 0) {
+                        setLoadedRelatedVideos(videos);
+                        setIsLoadingVideos(false);
+                        return;
+                    }
+                }
+                
+                // If no videos found, try just same subject
+                res = await fetch(`/api/videos?subject=${video.subject}&limit=12&excludeId=${video.id}`);
+                if (res.ok) {
+                    const videos = await res.json();
+                    console.log('Fetched related videos (subject only):', videos.length);
+                    if (videos.length > 0) {
+                        setLoadedRelatedVideos(videos);
+                        setIsLoadingVideos(false);
+                        return;
+                    }
+                }
+                
+                // If still no videos, get any videos except current one
+                res = await fetch(`/api/videos?limit=12&excludeId=${video.id}`);
+                if (res.ok) {
+                    const videos = await res.json();
+                    console.log('Fetched related videos (any):', videos.length);
+                    setLoadedRelatedVideos(videos);
+                }
+            } catch (error) {
+                console.error('Failed to fetch related videos:', error);
+            } finally {
+                setIsLoadingVideos(false);
+            }
+        };
+
+        fetchRelatedVideos();
+    }, [isOpen, video.id, video.subject, video.grade]);
 
     // Debug log
     useEffect(() => {
         if (isOpen) {
-            console.log('DetailModal - Related videos count:', relatedVideos.length);
+            console.log('DetailModal - Related videos count:', loadedRelatedVideos.length);
         }
-    }, [isOpen, relatedVideos]);
+    }, [isOpen, loadedRelatedVideos]);
 
     useEffect(() => {
         setMounted(true);
@@ -200,9 +249,13 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
                             {/* More Like This Section */}
                             <div className="mt-12 border-t border-gray-700 pt-8 pb-8">
                                 <h3 className="mb-6 text-2xl font-bold text-white">More Like These</h3>
-                                {relatedVideos.length > 0 ? (
+                                {isLoadingVideos ? (
+                                    <div className="text-gray-400 text-center py-8">
+                                        Loading related videos...
+                                    </div>
+                                ) : loadedRelatedVideos.length > 0 ? (
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                        {relatedVideos.map((relatedVideo) => (
+                                        {loadedRelatedVideos.map((relatedVideo) => (
                                             <div
                                                 key={relatedVideo.id}
                                                 className="relative aspect-video rounded overflow-hidden bg-gray-800 cursor-pointer transition-transform hover:scale-105 group"
@@ -230,7 +283,7 @@ export default function DetailModal({ video, isOpen, onClose, relatedVideos = []
                                     </div>
                                 ) : (
                                     <div className="text-gray-400 text-center py-8">
-                                        Loading related videos...
+                                        No related videos found.
                                     </div>
                                 )}
                             </div>

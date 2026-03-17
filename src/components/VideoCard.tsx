@@ -17,7 +17,6 @@ export default function VideoCard({ video }: VideoCardProps) {
     const [isModalHovered, setIsModalHovered] = useState(false);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [isFavorited, setIsFavorited] = useState(false);
-    const [relatedVideos, setRelatedVideos] = useState<VideoType[]>([]);
     const cardRef = useRef<HTMLDivElement>(null);
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -53,47 +52,6 @@ export default function VideoCard({ video }: VideoCardProps) {
             headers: { 'Content-Type': 'application/json' },
         });
         if (res.ok) setIsFavorited(!isFavorited);
-    };
-
-    const fetchRelatedVideos = async () => {
-        try {
-            // First try to get videos with same subject and grade
-            let res = await fetch(`/api/videos?subject=${video.subject}&grade=${video.grade}&limit=12&excludeId=${video.id}`);
-            if (res.ok) {
-                const videos = await res.json();
-                console.log('Fetched related videos (subject+grade):', videos.length);
-                if (videos.length > 0) {
-                    setRelatedVideos(videos);
-                    return;
-                }
-            }
-            
-            // If no videos found, try just same subject
-            res = await fetch(`/api/videos?subject=${video.subject}&limit=12&excludeId=${video.id}`);
-            if (res.ok) {
-                const videos = await res.json();
-                console.log('Fetched related videos (subject only):', videos.length);
-                if (videos.length > 0) {
-                    setRelatedVideos(videos);
-                    return;
-                }
-            }
-            
-            // If still no videos, get any videos except current one
-            res = await fetch(`/api/videos?limit=12&excludeId=${video.id}`);
-            if (res.ok) {
-                const videos = await res.json();
-                console.log('Fetched related videos (any):', videos.length);
-                setRelatedVideos(videos);
-            }
-        } catch (error) {
-            console.error('Failed to fetch related videos:', error);
-        }
-    };
-
-    const handleOpenModal = () => {
-        fetchRelatedVideos();
-        setIsModalOpen(true);
     };
 
     const handleCardMouseEnter = () => {
@@ -133,7 +91,7 @@ export default function VideoCard({ video }: VideoCardProps) {
                 className="relative min-w-[160px] h-28 cursor-pointer transition-transform duration-200 ease-out md:h-36 md:min-w-[260px] md:hover:scale-110 z-10"
                 onMouseEnter={handleCardMouseEnter}
                 onMouseLeave={handleCardMouseLeave}
-                onClick={handleOpenModal}
+                onClick={() => setIsModalOpen(true)}
             >
                 <Image
                     src={video.thumbnail}
@@ -188,7 +146,7 @@ export default function VideoCard({ video }: VideoCardProps) {
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleOpenModal();
+                                        setIsModalOpen(true);
                                     }}
                                     className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition hover:bg-gray-200"
                                 >
@@ -243,7 +201,6 @@ export default function VideoCard({ video }: VideoCardProps) {
                     video={video} 
                     isOpen={isModalOpen} 
                     onClose={() => setIsModalOpen(false)}
-                    relatedVideos={relatedVideos}
                 />
             )}
         </>
